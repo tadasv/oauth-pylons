@@ -1,6 +1,6 @@
 # Overview
 
-The goal of oauth-pylons is to provide a simple to use OAuth abstraction for Pylons controllers method decorators.
+The goal of oauth-pylons is to provide a simple to use OAuth abstraction for Pylons controllers through method decorators.
 
 # TODO
 
