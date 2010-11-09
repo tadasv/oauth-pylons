@@ -19,7 +19,6 @@
 # THE SOFTWARE.
 
 from pylons.controllers import WSGIController
-from pylons.controllers.util import abort
 
 from oauth2 import (Request as OAuthRequest,
                     Server as OAuthServer,
@@ -44,7 +43,7 @@ class OAuthStoreBase(object):
         in your OAuth storage facility. The method must return OAuthConsumer
         instance or its subclass; otherwise raise InvalidConsumerError.
         """
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def create_request_token(self, consumer):
         """
@@ -52,7 +51,7 @@ class OAuthStoreBase(object):
         return an instance of oauth2.Token or its subclass. Additionally you
         might want to store the token so you could retrieve it in later steps.
         """
-        raise NotImplemented()
+        raise NotImplementedError()
 
 
 

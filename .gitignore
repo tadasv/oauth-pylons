@@ -2,4 +2,6 @@
 *.swp
 tmp
 dist
+build
 MANIFEST
+oauthpylons.egg-info
