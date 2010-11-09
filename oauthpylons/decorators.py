@@ -18,7 +18,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-from oauthpylons import OAuthStoreBase
+from oauthpylons import OAuthStoreBase, InvalidConsumerError, OAuthError
+from pylons import response
+from pylons.controllers.util import abort
 
 __all__ = ["oauth_request_token"]
 
@@ -65,16 +67,21 @@ def oauth_request_token(oauth_store=None,
                 #
                 try:
                     res = self.oauth_server.verify_request(self.oauth_request, consumer, None)
-                except OAuthError:
-                    abort(400, 'Invalid OAuth signature')
+                except OAuthError as e:
+                    if "signature" in str(e):
+                        abort(400, 'Invalid OAuth signature.')
+                    else:
+                        abort(400, str(e))
 
-                #token = oauth_store.create_request_token(consumer)
+                token = oauth_store.create_request_token(consumer)
             except InvalidConsumerError:
                 abort(400, 'Invalid OAuth consumer.')
             except OAuthError as e:
                 abort(400, str(e))
 
-            result = f(self, *args, get_new_kwargs(f, kwargs))
+            result = f(self, *args, **get_new_kwargs(f, **kwargs))
+            result = str(token)
+            response.content_type = "application/x-www-form-urlencoded"
             return result
         return wrapped_f
     return wrap
